@@ -3,5 +3,5 @@
 A snake game created to showcase a knowledge of python
 ## Requirements (TBC):
 <ul>
-  <l1>pyGame</l1>
+  <li>pyGame</li>
 </ul>
