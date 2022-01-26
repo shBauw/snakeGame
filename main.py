@@ -1,5 +1,5 @@
 # Import needed libraries
-from socketserver import BaseRequestHandler
+import random
 import pygame as pg
 import sys
 
@@ -13,22 +13,42 @@ green = 0, 255, 0
 blue = 0, 0, 255
 
 # Set window size
-size = width, height = 501, 501
+size = width, height = 500, 500
 screen = pg.display.set_mode(size)
 
 # Set initial position
-xInit = 251
-yInit = 251
+xInit = 250
+yInit = 250
+square = 20
 clock = pg.time.Clock()
 
 # Movement
 xChange = 0
 yChange = 0
-speed = 20
+speed = 15
+
+# Set scopes for conditions
+apple = False
+gameOver = False
+randomx = 0
+randomy = 0
+score = 0
 
 # Loop for game
 while True:
 
+    # Spawn new apple
+    if apple == False or gameOver == True:
+        randomx = round(random.randrange(0, width - square) / 10) * 10
+        randomy = round(random.randrange(0, height - square) / 10) * 10
+
+        # Check to make sure apple not spawned on snake
+        if round(xInit / square) != round(randomx / square) and round(yInit / square) != round(randomy / square):
+            apple = True
+    if round(xInit / square) == round(randomx / square) and round(yInit / square) == round(randomy / square):
+        apple = False
+        score += 1
+        speed = 15 + score * 2
     # Event loop
     for event in pg.event.get():
         # Quit
@@ -49,12 +69,37 @@ while True:
             elif event.key == pg.K_LEFT:
                 xChange = -10
                 yChange = 0
+        
+        # Set border
+        if xInit >= width or xInit < 0 or yInit >= height or yInit < 0:
+            gameOver = True
+        
+        # Create condition for snake overlapping itself
+
+        # Ending condition
+        while gameOver == True:
+            screen.fill(black)
+            screen.blit(pg.font.SysFont(None, 30).render("Q = Quit, R = Retry", True, green), [width / 4, height / 4])
+            pg.display.update()
+
+            for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_q:
+                        sys.exit()
+                    if event.key == pg.K_r:
+                        score = 0
+                        xInit = 250
+                        yInit = 250
+                        gameOver = False
+
+
     
-    # Movement
+    # Movement and refresh screen
     xInit += xChange
     yInit += yChange
     screen.fill(black)
-    pg.draw.rect(screen, green, [xInit, yInit, 15, 15])
+    pg.draw.rect(screen, green, [xInit, yInit, square, square])
+    pg.draw.rect(screen, red, [randomx, randomy, square, square])
     pg.display.update()
 
     clock.tick(speed)
