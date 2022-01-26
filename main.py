@@ -39,16 +39,19 @@ while True:
 
     # Spawn new apple
     if apple == False or gameOver == True:
-        randomx = round(random.randrange(0, width - square) / 10) * 10
-        randomy = round(random.randrange(0, height - square) / 10) * 10
+        randomx = round(random.randrange(square, width - square) / square) * square
+        randomy = round(random.randrange(square, height - square) / square) * square
 
         # Check to make sure apple not spawned on snake
         if round(xInit / square) != round(randomx / square) and round(yInit / square) != round(randomy / square):
             apple = True
+    
+    # Check if apples are eaten
     if round(xInit / square) == round(randomx / square) and round(yInit / square) == round(randomy / square):
         apple = False
         score += 1
-        speed = 15 + score * 2
+        speed = 15 + score
+
     # Event loop
     for event in pg.event.get():
         # Quit
@@ -82,6 +85,7 @@ while True:
             screen.blit(pg.font.SysFont(None, 30).render("Q = Quit, R = Retry", True, green), [width / 4, height / 4])
             pg.display.update()
 
+            # Quit or restart
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_q:
@@ -91,8 +95,6 @@ while True:
                         xInit = 250
                         yInit = 250
                         gameOver = False
-
-
     
     # Movement and refresh screen
     xInit += xChange
@@ -100,6 +102,7 @@ while True:
     screen.fill(black)
     pg.draw.rect(screen, green, [xInit, yInit, square, square])
     pg.draw.rect(screen, red, [randomx, randomy, square, square])
+    screen.blit(pg.font.SysFont("None", 30).render("Score: " + str(score), True, green), [width / 10, height / 10])
     pg.display.update()
 
     clock.tick(speed)
