@@ -33,6 +33,7 @@ gameOver = False
 randomx = 0
 randomy = 0
 score = 0
+pauseGame = False
 
 # Loop for game
 while True:
@@ -72,6 +73,22 @@ while True:
             elif event.key == pg.K_LEFT:
                 xChange = -10
                 yChange = 0
+            # Create pause menu
+            elif event.key == pg.K_ESCAPE:
+                pauseGame = True
+                while pauseGame == True:
+                    screen.fill(black)
+                    screen.blit(pg.font.SysFont("None", 30).render("Score: " + str(score), True, green), [width / 10, height / 10])
+                    screen.blit(pg.font.SysFont(None, 30).render("Q = Quit, C = Continue", True, green), [width / 4, height / 4])
+                    pg.display.update()
+                    for event in pg.event.get():
+                        if event.type == pg.QUIT:
+                            sys.exit()
+                        elif event.type == pg.KEYDOWN:
+                            if event.key == pg.K_q:
+                                sys.exit()
+                            elif event.key == pg.K_c:
+                                pauseGame = False
         
         # Set border
         if xInit >= width or xInit < 0 or yInit >= height or yInit < 0:
@@ -87,7 +104,9 @@ while True:
 
             # Quit or restart
             for event in pg.event.get():
-                if event.type == pg.KEYDOWN:
+                if event.type == pg.QUIT:
+                    sys.exit()
+                elif event.type == pg.KEYDOWN:
                     if event.key == pg.K_q:
                         sys.exit()
                     if event.key == pg.K_r:
