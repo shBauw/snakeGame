@@ -137,15 +137,14 @@ while True:
         del ySnake[0]
 
     # Check for overlapping
-    for x in range(snakeLength - 1):
-        if (xSnake[0] == xSnake[x + 1] and ySnake[0] == ySnake[x + 1]):
+    for i in range(snakeLength - 1):
+        if (xSnake[snakeLength - 1] == xSnake[i] and ySnake[snakeLength - 1] == ySnake[i]):
             gameOver = True
 
     # Refresh screen
     screen.fill(black)
-    for x in range(len(xSnake)):
-        for y in range(len(ySnake)):
-            pg.draw.rect(screen, green, [xSnake[x], ySnake[y], square, square])
+    for i in range(snakeLength):
+        pg.draw.rect(screen, green, [xSnake[i], ySnake[i], square, square])
     pg.draw.rect(screen, red, [randomx, randomy, square, square])
     screen.blit(pg.font.SysFont("None", 30).render("Score: " + str(score), True, green), [width / 10, height / 10])
     pg.display.update()
