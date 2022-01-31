@@ -19,7 +19,7 @@ screen = pg.display.set_mode(size)
 # Set initial position
 xPos = 250
 yPos = 250
-square = 15
+square = 20
 xSnake = [xPos]
 ySnake = [yPos]
 snakeLength = 1
@@ -50,14 +50,16 @@ while True:
             apple = True
     
     # Check if apples are eaten
-    if round(xPos / square) == round(randomx / square) and round(yPos / square) == round(randomy / square):
+    if round(xPos / (square * 2)) == round(randomx / (square * 2)) and round(yPos / (square * 2)) == round(randomy / (square * 2)):
         apple = False
         score += 1
-        speed = 15 + score
+        speed += score
 
         xSnake.append(xPos - xChange)
         ySnake.append(yPos - yChange)
         snakeLength += 1
+    
+    
 
     # Event loop
     for event in pg.event.get():
