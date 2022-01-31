@@ -50,7 +50,7 @@ while True:
             apple = True
     
     # Check if apples are eaten
-    if round(xPos / (square * 2)) == round(randomx / (square * 2)) and round(yPos / (square * 2)) == round(randomy / (square * 2)):
+    if round(xPos / square / 2) == round(randomx / square / 2) and round(yPos / square / 2) == round(randomy / square / 2):
         apple = False
         score += 1
         speed += score
