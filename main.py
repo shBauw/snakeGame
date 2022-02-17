@@ -13,12 +13,12 @@ green = 0, 255, 0
 blue = 0, 0, 255
 
 # Set window size
-size = width, height = 500, 500
+size = width, height = 400, 400
 screen = pg.display.set_mode(size)
 
 # Set initial position
-xPos = 250
-yPos = 250
+xPos = 200
+yPos = 200
 square = 20
 xSnake = [xPos]
 ySnake = [yPos]
@@ -27,7 +27,7 @@ snakeLength = 1
 # Movement
 xChange = 0
 yChange = 0
-speed = 15
+speed = 10
 
 # Set scopes for conditions
 apple = False
@@ -50,10 +50,10 @@ while True:
             apple = True
     
     # Check if apples are eaten
-    if round(xPos / square / 2) == round(randomx / square / 2) and round(yPos / square / 2) == round(randomy / square / 2):
+    if xPos == randomx and yPos == randomy:
         apple = False
         score += 1
-        speed += score
+        speed += 1
 
         xSnake.append(xPos - xChange)
         ySnake.append(yPos - yChange)
@@ -80,15 +80,15 @@ while True:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_UP:
                     xChange = 0
-                    yChange = -15
+                    yChange = -20
                 elif event.key == pg.K_DOWN:
                     xChange = 0
-                    yChange = 15
+                    yChange = 20
                 elif event.key == pg.K_RIGHT:
-                    xChange = 15
+                    xChange = 20
                     yChange = 0
                 elif event.key == pg.K_LEFT:
-                    xChange = -15
+                    xChange = -20
                     yChange = 0
                 # Create pause menu
                 elif event.key == pg.K_ESCAPE:
@@ -125,7 +125,7 @@ while True:
                     snakeLength = 1
                     xChange = 0
                     yChange = 0
-                    speed = 15
+                    speed = 10
                     gameOver = False
     
     # Movement
