@@ -21,10 +21,6 @@ def message(msg, w, h):
     screen.blit(pg.font.SysFont(None, 30).render(msg, True, green), [width / w, height / h])
     pg.display.update()
 
-# Define random
-def rand(axis):
-    round(random.randrange(square, axis - square) / square) * square
-
 while True:
     # Setting inital positions
     xPos = 200
@@ -53,8 +49,8 @@ while True:
 
         # Spawn new apple
         if apple == False or gameOver == True:
-            randomx = rand(width)
-            randomy = rand(height)
+            randomx = round(random.randrange(square, width - square) / square) * square
+            randomy = round(random.randrange(square, height - square) / square) * square
 
             # Check to make sure apple not spawned on snake
             if round(xPos / square) != round(randomx / square) and round(yPos / square) != round(randomy / square):
