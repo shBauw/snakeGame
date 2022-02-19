@@ -16,6 +16,15 @@ blue = 0, 0, 255
 size = width, height = 400, 400
 screen = pg.display.set_mode(size)
 
+# Define message
+def message(msg, w, h):
+    screen.blit(pg.font.SysFont(None, 30).render(msg, True, green), [width / w, height / h])
+    pg.display.update()
+
+# Define random
+def rand(axis):
+    round(random.randrange(square, axis - square) / square) * square
+
 while True:
     # Setting inital positions
     xPos = 200
@@ -44,8 +53,8 @@ while True:
 
         # Spawn new apple
         if apple == False or gameOver == True:
-            randomx = round(random.randrange(square, width - square) / square) * square
-            randomy = round(random.randrange(square, height - square) / square) * square
+            randomx = rand(width)
+            randomy = rand(height)
 
             # Check to make sure apple not spawned on snake
             if round(xPos / square) != round(randomx / square) and round(yPos / square) != round(randomy / square):
@@ -68,8 +77,7 @@ while True:
         # Ending condition
         if gameOver == True:
             screen.fill(black)
-            screen.blit(pg.font.SysFont(None, 30).render("Q = Quit, R = Retry", True, green), [width / 4, height / 4])
-            pg.display.update()
+            message("Q = Quit, R = Retry", 4, 4)
 
         # Event loop
         if gameOver == False:
@@ -97,9 +105,8 @@ while True:
                         pauseGame = True
                         while pauseGame == True:
                             screen.fill(black)
-                            screen.blit(pg.font.SysFont("None", 30).render("Score: " + str(score), True, green), [width / 10, height / 10])
-                            screen.blit(pg.font.SysFont(None, 30).render("Q = Quit, C = Continue", True, green), [width / 4, height / 4])
-                            pg.display.update()
+                            message("Score: " + str(score), 10, 10)
+                            message("Q = Quit, C = Continue", 4, 4)
                             for event in pg.event.get():
                                 if event.type == pg.QUIT:
                                     sys.exit()
@@ -143,7 +150,6 @@ while True:
         for i in range(snakeLength):
             pg.draw.rect(screen, green, [xSnake[i], ySnake[i], square, square])
         pg.draw.rect(screen, red, [randomx, randomy, square, square])
-        screen.blit(pg.font.SysFont("None", 30).render("Score: " + str(score), True, green), [width / 10, height / 10])
-        pg.display.update()
+        message("Score: " + str(score), 10, 10)
 
         pg.time.Clock().tick(speed)
