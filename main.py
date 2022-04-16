@@ -38,9 +38,11 @@ class snake(object):
     def move(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
+                pg.display.quit()
                 pg.quit()
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
+                    pg.display.quit()
                     pg.quit()
                 elif event.key == pg.K_UP:
                     self.dirx = 0
