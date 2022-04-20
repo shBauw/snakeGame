@@ -1,22 +1,22 @@
-# Import needed libraries
+# Mostly not my code
 import random
 from re import X
 import pygame as pg
 import sys
 
-class pod(object):
+class cube(object):
     rows = 20
     width = 500
-    def __init__(self, start, dirx=1, diry=0, colour=(0,255,0)):
+    def __init__(self, start, dirnx=1, dirny=0, colour=(0,255,0)):
         self.pos = start
-        self.dirx = 1
-        self.diry = 0
+        self.dirnx = 1
+        self.dirny = 0
         self.colour = colour
 
-    def move(self, dirx, diry):
-        self.dirx = dirx
-        self.diry = diry
-        self.pos = (self.pos[0] + dirx, self.pos[1] + diry)
+    def move(self, dirnx, dirny):
+        self.dirnx = dirnx
+        self.dirny = dirny
+        self.pos = (self.pos[0] + dirnx, self.pos[1] + dirny)
 
     def draw(self, surface):
         display = self.width // self.rows
@@ -30,10 +30,10 @@ class snake(object):
     turns = {}
     def __init__(self, colour, pos):
         self.colour = colour
-        self.head = pod(pos)
+        self.head = cube(pos)
         self.body.append(self.head)
-        self.dirx = 0
-        self.diry = 1
+        self.dirnx = 0
+        self.dirny = 1
 
     def move(self):
         for event in pg.event.get():
@@ -45,21 +45,21 @@ class snake(object):
                     pg.display.quit()
                     pg.quit()
                 elif event.key == pg.K_UP:
-                    self.dirx = 0
-                    self.diry = -1
-                    self.turns[self.head.pos[:]] = [self.dirx, self.diry]
+                    self.dirnx = 0
+                    self.dirny = -1
+                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
                 elif event.key == pg.K_DOWN:
-                    self.dirx = 0
-                    self.diry = 1
-                    self.turns[self.head.pos[:]] = [self.dirx, self.diry]
+                    self.dirnx = 0
+                    self.dirny = 1
+                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
                 elif event.key == pg.K_RIGHT:
-                    self.dirx = 1
-                    self.diry = 0
-                    self.turns[self.head.pos[:]] = [self.dirx, self.diry]
+                    self.dirnx = 1
+                    self.dirny = 0
+                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
                 elif event.key == pg.K_LEFT:
-                    self.dirx = -1
-                    self.diry = 0
-                    self.turns[self.head.pos[:]] = [self.dirx, self.diry]         
+                    self.dirnx = -1
+                    self.dirny = 0
+                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]         
         
         for count, index in enumerate(self.body):
             p = index.pos[:]
@@ -69,44 +69,44 @@ class snake(object):
                 if count == len(self.body) - 1:
                     self.turns.pop(p)
             else:
-                if index.dirx == -1 and index.pos[0] <= 0: 
+                if index.dirnx == -1 and index.pos[0] <= 0: 
                     print('Score: ', len(s.body))
                     s.reset((10,10))
-                elif index.dirx == 1 and index.pos[0] >= index.rows-1: 
+                elif index.dirnx == 1 and index.pos[0] >= index.rows-1: 
                     print('Score: ', len(s.body))
                     s.reset((10,10))
-                elif index.diry == 1 and index.pos[1] >= index.rows-1: 
+                elif index.dirny == 1 and index.pos[1] >= index.rows-1: 
                     print('Score: ', len(s.body))
                     s.reset((10,10))
-                elif index.diry == -1 and index.pos[1] <= 0: 
+                elif index.dirny == -1 and index.pos[1] <= 0: 
                     print('Score: ', len(s.body))
                     s.reset((10,10))
                 else: 
-                    index.move(index.dirx,index.diry)
+                    index.move(index.dirnx,index.dirny)
 
     def reset(self, pos):
-        self.head = pod(pos)
+        self.head = cube(pos)
         self.body = [self.head]
         self.turns = {}
-        self.dirx = 0
-        self.diry = 1
+        self.dirnx = 0
+        self.dirny = 1
 
 
     def addCube(self):
         tail = self.body[-1]
-        dx, dy = tail.dirx, tail.diry
+        dx, dy = tail.dirnx, tail.dirny
 
         if dx == 1 and dy == 0:
-            self.body.append(pod((tail.pos[0]-1,tail.pos[1])))
+            self.body.append(cube((tail.pos[0]-1,tail.pos[1])))
         elif dx == -1 and dy == 0:
-            self.body.append(pod((tail.pos[0]+1,tail.pos[1])))
+            self.body.append(cube((tail.pos[0]+1,tail.pos[1])))
         elif dx == 0 and dy == 1:
-            self.body.append(pod((tail.pos[0],tail.pos[1]-1)))
+            self.body.append(cube((tail.pos[0],tail.pos[1]-1)))
         elif dx == 0 and dy == -1:
-            self.body.append(pod((tail.pos[0],tail.pos[1]+1)))
+            self.body.append(cube((tail.pos[0],tail.pos[1]+1)))
 
-        self.body[-1].dirx = dx
-        self.body[-1].diry = dy
+        self.body[-1].dirnx = dx
+        self.body[-1].dirny = dy
         
 
     def draw(self, surface):
@@ -157,7 +157,7 @@ def main():
     rows = 20
     win = pg.display.set_mode((width, width))
     s = snake((255,0,0), (10,10))
-    snack = pod(randomSnack(rows, s), colour=(255,0,0))
+    snack = cube(randomSnack(rows, s), colour=(255,0,0))
     flag = True
 
     clock = pg.time.Clock()
@@ -168,7 +168,7 @@ def main():
         s.move()
         if s.body[0].pos == snack.pos:
             s.addCube()
-            snack = pod(randomSnack(rows, s), colour=(255,0,0))
+            snack = cube(randomSnack(rows, s), colour=(255,0,0))
 
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z:z.pos,s.body[x+1:])):
